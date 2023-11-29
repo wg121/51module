@@ -1,0 +1,203 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    11/14/2023  13:37:36  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+D:\MDK\C51\BIN\BL51.EXE .\Objects\main.obj TO .\Objects\project PRINT (.\Listings\project.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\main.obj (MAIN)
+  D:\MDK\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\MDK\C51\LIB\C51S.LIB (MALLOC)
+  D:\MDK\C51\LIB\C51S.LIB (?C_INIT)
+  D:\MDK\C51\LIB\C51S.LIB (INIT_MEM)
+
+
+LINK MAP OF MODULE:  .\Objects\project (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0006H     UNIT         ?DT?MAIN
+            DATA    000EH     0004H     UNIT         ?DT?_MALLOC?MALLOC
+            IDATA   0012H     0001H     UNIT         ?STACK
+
+            * * * * * * *  X D A T A   M E M O R Y  * * * * * * *
+            XDATA   0000H     0008H     UNIT         ?XD?INIT_MEM
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     001DH     UNIT         ?PR?UART_INIT?MAIN
+                    0020H     0003H                  *** GAP ***
+            CODE    0023H     0003H     ABSOLUTE     
+            CODE    0026H     009CH     UNIT         ?PR?_MALLOC?MALLOC
+            CODE    00C2H     008CH     UNIT         ?C_C51STARTUP
+            CODE    014EH     003DH     UNIT         ?PR?_RECV_BUF_INIT?MAIN
+            CODE    018BH     003CH     UNIT         ?PR?_INIT_MEMPOOL?INIT_MEM
+            CODE    01C7H     0024H     UNIT         ?PR?UART_ROUNTER?MAIN
+            CODE    01EBH     001AH     UNIT         ?C_INITSEG
+            CODE    0205H     0015H     UNIT         ?PR?_DELAY_XMS?MAIN
+            CODE    021AH     0013H     UNIT         ?PR?MAIN?MAIN
+            CODE    022DH     0008H     UNIT         ?PR?_UART_SEND_BYTE?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\project (MAIN)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?UART_ROUNTER?MAIN
+  +--> ?PR?_UART_SEND_BYTE?MAIN
+
+*** NEW ROOT ***************************************************
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  11/14/2023  13:37:36  PAGE 2
+
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN
+  +--> ?PR?UART_INIT?MAIN
+  +--> ?PR?_DELAY_XMS?MAIN
+  +--> ?PR?_UART_SEND_BYTE?MAIN
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A0H         PUBLIC        P2
+  B:00B0H.5       PUBLIC        T1
+  B:00A8H.7       PUBLIC        EA
+  B:00A8H.4       PUBLIC        ES
+  B:0098H.0       PUBLIC        RI
+  B:00B8H.4       PUBLIC        PS
+  C:021AH         PUBLIC        main
+  D:0099H         PUBLIC        SBUF
+  D:0087H         PUBLIC        PCON
+  C:01C7H         PUBLIC        uart_rounter
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0008H         SYMBOL        uart_send_data
+  B:00A8H.3       PUBLIC        ET1
+  C:0205H         PUBLIC        _delay_xms
+  D:008DH         PUBLIC        TH1
+  D:0009H         SYMBOL        uart_recv_data
+  D:008BH         PUBLIC        TL1
+  C:0003H         PUBLIC        uart_init
+  B:0088H.6       PUBLIC        TR1
+  C:022DH         PUBLIC        _uart_send_byte
+  C:014EH         PUBLIC        _recv_buf_init
+  D:000AH         PUBLIC        uart_recv_buf
+  D:000DH         PUBLIC        RECV_LEN
+  -------         PROC          _RECV_BUF_INIT
+  D:0007H         SYMBOL        len
+  C:014EH         LINE#         17
+  C:014EH         LINE#         18
+  C:014EH         LINE#         19
+  C:0163H         LINE#         20
+  C:016AH         LINE#         21
+  C:016AH         LINE#         23
+  C:017AH         LINE#         26
+  C:0180H         LINE#         27
+  C:0184H         LINE#         28
+  C:0184H         LINE#         31
+  C:018AH         LINE#         32
+  -------         ENDPROC       _RECV_BUF_INIT
+  -------         PROC          _DELAY_XMS
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  11/14/2023  13:37:36  PAGE 3
+
+
+  D:0006H         SYMBOL        xms
+  -------         DO            
+  D:0005H         SYMBOL        i
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:0205H         LINE#         36
+  C:0205H         LINE#         37
+  C:0205H         LINE#         40
+  C:020FH         LINE#         41
+  C:0211H         LINE#         42
+  C:0213H         LINE#         44
+  C:0213H         LINE#         45
+  C:0215H         LINE#         46
+  C:0217H         LINE#         47
+  C:0219H         LINE#         48
+  -------         ENDPROC       _DELAY_XMS
+  -------         PROC          UART_INIT
+  C:0003H         LINE#         51
+  C:0003H         LINE#         52
+  C:0006H         LINE#         53
+  C:0009H         LINE#         54
+  C:000CH         LINE#         55
+  C:000FH         LINE#         56
+  C:0012H         LINE#         57
+  C:0015H         LINE#         58
+  C:0017H         LINE#         59
+  C:0019H         LINE#         62
+  C:001BH         LINE#         63
+  C:001DH         LINE#         64
+  C:001FH         LINE#         65
+  -------         ENDPROC       UART_INIT
+  -------         PROC          _UART_SEND_BYTE
+  D:0007H         SYMBOL        byte
+  C:022DH         LINE#         68
+  C:022DH         LINE#         69
+  C:022FH         LINE#         70
+  C:0232H         LINE#         71
+  C:0234H         LINE#         72
+  -------         ENDPROC       _UART_SEND_BYTE
+  -------         PROC          MAIN
+  C:021AH         LINE#         75
+  C:021AH         LINE#         76
+  C:021DH         LINE#         77
+  C:021DH         LINE#         79
+  C:0224H         LINE#         80
+  C:022BH         LINE#         81
+  -------         ENDPROC       MAIN
+  -------         PROC          UART_ROUNTER
+  C:01C7H         LINE#         84
+  C:01D0H         LINE#         86
+  C:01D3H         LINE#         87
+  C:01D6H         LINE#         88
+  C:01DDH         LINE#         89
+  C:01E2H         LINE#         90
+  C:01E4H         LINE#         91
+  C:01E4H         LINE#         92
+  -------         ENDPROC       UART_ROUNTER
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  11/14/2023  13:37:36  PAGE 4
+
+
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        MALLOC
+  C:0026H         PUBLIC        _malloc
+  -------         ENDMOD        MALLOC
+
+  -------         MODULE        INIT_MEM
+  X:0000H         PUBLIC        __mem_avail__
+  C:018BH         PUBLIC        _init_mempool
+  -------         ENDMOD        INIT_MEM
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RECV_BUF_INIT?MAIN
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_INIT_MEMPOOL?INIT_MEM
+
+Program Size: data=19.0 xdata=8 code=562
+LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  0 ERROR(S)

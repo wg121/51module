@@ -1,0 +1,97 @@
+C51 COMPILER V9.60.0.0   MARTIXKEY                                                         11/19/2023 11:24:48 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MARTIXKEY
+OBJECT MODULE PLACED IN .\Objects\MartixKey.obj
+COMPILER INVOKED BY: D:\MDK\C51\BIN\C51.EXE MartixKey.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\Mar
+                    -tixKey.lst) TABS(2) OBJECT(.\Objects\MartixKey.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "MartixKey.h"
+   3          
+   4          /* 
+   5           * 函数名：delay_matrixkey_matrixkey
+   6           *  
+   7           * 功能：矩阵键盘延时 20 毫秒，为了消抖
+   8           *
+   9           * 参数：void
+  10           *
+  11           * 备注：
+  12           */
+  13          static void delay_matrixkey()
+  14          {
+  15   1        unsigned char i, j;
+  16   1        unsigned char ms = 20;
+  17   1        
+  18   1        while(ms--){
+  19   2          i = 11;
+  20   2          j = 190;
+  21   2          do
+  22   2          {
+  23   3            while (--j);
+  24   3          } while (--i);
+  25   2        }
+  26   1      }
+  27          
+  28          //矩阵键盘获取函数
+  29          /* 
+  30           * 函数名：matrixKey
+  31           *  
+  32           * 功能：矩阵键盘获取函数
+  33           *
+  34           * 参数：void
+  35           *
+  36           * 备注：
+  37           */
+  38          unsigned char matrixKey()
+  39          {
+  40   1        static unsigned char KeyNum = 0;
+  41   1          
+  42   1        P1 = 0xFF;
+  43   1        P1_3 = 0;
+  44   1        if(0 == P1_7){delay_matrixkey();while(0 == P1_7);delay_matrixkey();KeyNum=1;}
+  45   1        if(0 == P1_6){delay_matrixkey();while(0 == P1_6);delay_matrixkey();KeyNum=5;}
+  46   1        if(0 == P1_5){delay_matrixkey();while(0 == P1_5);delay_matrixkey();KeyNum=9;}
+  47   1        if(0 == P1_4){delay_matrixkey();while(0 == P1_4);delay_matrixkey();KeyNum=13;}
+  48   1      
+  49   1        P1 = 0xFF;
+  50   1        P1_2 = 0;
+  51   1        if(0 == P1_7){delay_matrixkey();while(0 == P1_7);delay_matrixkey();KeyNum=2;}
+  52   1        if(0 == P1_6){delay_matrixkey();while(0 == P1_6);delay_matrixkey();KeyNum=6;}
+  53   1        if(0 == P1_5){delay_matrixkey();while(0 == P1_5);delay_matrixkey();KeyNum=10;}
+  54   1        if(0 == P1_4){delay_matrixkey();while(0 == P1_4);delay_matrixkey();KeyNum=14;}
+C51 COMPILER V9.60.0.0   MARTIXKEY                                                         11/19/2023 11:24:48 PAGE 2   
+
+  55   1        
+  56   1        P1 = 0xFF;
+  57   1        P1_1 = 0;
+  58   1        if(0 == P1_7){delay_matrixkey();while(0 == P1_7);delay_matrixkey();KeyNum=3;}
+  59   1        if(0 == P1_6){delay_matrixkey();while(0 == P1_6);delay_matrixkey();KeyNum=7;}
+  60   1        if(0 == P1_5){delay_matrixkey();while(0 == P1_5);delay_matrixkey();KeyNum=11;}
+  61   1        if(0 == P1_4){delay_matrixkey();while(0 == P1_4);delay_matrixkey();KeyNum=15;}
+  62   1        
+  63   1        P1 = 0xFF;
+  64   1        P1_0 = 0;
+  65   1        if(0 == P1_7){delay_matrixkey();while(0 == P1_7);delay_matrixkey();KeyNum=4;}
+  66   1        if(0 == P1_6){delay_matrixkey();while(0 == P1_6);delay_matrixkey();KeyNum=8;}
+  67   1        if(0 == P1_5){delay_matrixkey();while(0 == P1_5);delay_matrixkey();KeyNum=12;}
+  68   1        if(0 == P1_4){delay_matrixkey();while(0 == P1_4);delay_matrixkey();KeyNum=16;}
+  69   1        
+  70   1        return KeyNum;
+  71   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    282    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

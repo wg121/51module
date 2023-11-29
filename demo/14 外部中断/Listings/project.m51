@@ -1,0 +1,92 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    11/20/2023  16:24:53  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+D:\MDK\C51\BIN\BL51.EXE .\Objects\main.obj TO .\Objects\project PRINT (.\Listings\project.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\main.obj (MAIN)
+  D:\MDK\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\Objects\project (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     ABSOLUTE     
+            CODE    0006H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0012H     000BH     UNIT         ?PR?EXIT_INIT?MAIN
+            CODE    001DH     0005H     UNIT         ?PR?MAIN?MAIN
+            CODE    0022H     0003H     UNIT         ?PR?EXIT_ROUNTION?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\project (MAIN)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?MAIN
+
+?PR?MAIN?MAIN
+  +--> ?PR?EXIT_INIT?MAIN
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0022H         PUBLIC        EXIT_Rountion
+  B:00A8H.7       PUBLIC        EA
+  B:00A0H.0       PUBLIC        P2_0
+  C:001DH         PUBLIC        main
+  C:0012H         PUBLIC        EXIT_Init
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  11/20/2023  16:24:53  PAGE 2
+
+
+  B:0088H.1       PUBLIC        IE0
+  B:00A8H.0       PUBLIC        EX0
+  B:0088H.0       PUBLIC        IT0
+  B:00B8H.0       PUBLIC        PX0
+  -------         PROC          EXIT_INIT
+  C:0012H         LINE#         3
+  C:0012H         LINE#         4
+  C:0014H         LINE#         5
+  C:0016H         LINE#         6
+  C:0018H         LINE#         7
+  C:001AH         LINE#         8
+  C:001CH         LINE#         9
+  -------         ENDPROC       EXIT_INIT
+  -------         PROC          MAIN
+  C:001DH         LINE#         11
+  C:001DH         LINE#         12
+  C:0020H         LINE#         13
+  C:0020H         LINE#         15
+  -------         ENDPROC       MAIN
+  -------         PROC          EXIT_ROUNTION
+  C:0022H         LINE#         18
+  C:0022H         LINE#         20
+  C:0024H         LINE#         21
+  -------         ENDPROC       EXIT_ROUNTION
+  -------         ENDMOD        MAIN
+
+Program Size: data=9.0 xdata=0 code=37
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

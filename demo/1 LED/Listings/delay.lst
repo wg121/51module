@@ -1,0 +1,66 @@
+C51 COMPILER V9.60.0.0   DELAY                                                             11/14/2023 19:51:16 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DELAY
+OBJECT MODULE PLACED IN .\Objects\delay.obj
+COMPILER INVOKED BY: D:\MDK\C51\BIN\C51.EXE delay.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\delay.l
+                    -st) TABS(2) OBJECT(.\Objects\delay.obj)
+
+line level    source
+
+   1          #include "delay.h"
+   2          
+   3          /* 函数名：delay_ms
+   4           * 
+   5           * 功能：延时xms毫秒
+   6           * 
+   7           * 参数：xms
+   8           *
+   9           * 备注：
+  10           */
+  11          void delay_ms(unsigned int xms)   //11.0592MHz
+  12          {
+  13   1        unsigned char i, j;
+  14   1      
+  15   1        while(xms--){
+  16   2          i = 2;
+  17   2          j = 199;
+  18   2          do
+  19   2          {
+  20   3            while (--j);
+  21   3          } while (--i);
+  22   2      
+  23   2        }
+  24   1      }
+  25          
+  26          /* 函数名：delay_ms
+  27           * 
+  28           * 功能：延时10个xus微秒
+  29           * 
+  30           * 参数：xus
+  31           *
+  32           * 备注：
+  33           */
+  34          void delay_10us_x(unsigned int xus)   //@11.0592MHz
+  35          {
+  36   1        unsigned char i;
+  37   1      
+  38   1        while(xus--){
+  39   2          i = 25;
+  40   2          while (--i);
+  41   2        } 
+  42   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     40    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

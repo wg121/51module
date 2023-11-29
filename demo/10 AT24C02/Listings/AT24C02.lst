@@ -1,0 +1,80 @@
+C51 COMPILER V9.60.0.0   AT24C02                                                           11/19/2023 12:22:08 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE AT24C02
+OBJECT MODULE PLACED IN .\Objects\AT24C02.obj
+COMPILER INVOKED BY: D:\MDK\C51\BIN\C51.EXE AT24C02.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\AT24C
+                    -02.lst) TABS(2) OBJECT(.\Objects\AT24C02.obj)
+
+line level    source
+
+   1          #include "AT24C02.h"
+   2          
+   3          /* 函数名：AT24C02_Write_Byte
+   4           *  
+   5           * 函数功能：在Address处写入数据Data
+   6           * 
+   7           * 函数参数：Address：AT24C02中ROM所对应的内存地址
+   8           *           Data：要给这块ROM写的数据
+   9           * 
+  10           * 函数返回值：void
+  11           *
+  12           * 备注：
+  13           */
+  14          void AT24C02_Write_Byte(unsigned char Address, unsigned char Data)
+  15          {
+  16   1        IIC_Start();                      //IIC开始
+  17   1        IIC_Send_Byte(SLAVE_ADDRESS_W);   //写地址 + 写操作（向从机发送数据）
+  18   1        IIC_Wait_Ack();                   //从机应答
+  19   1        IIC_Send_Byte(Address);           //写AT24C02中ROM所对应的内存地址
+  20   1        IIC_Wait_Ack();                   //
+  21   1        IIC_Send_Byte(Data);              //写AT24C02中ROM所对应的内存地址的数据
+  22   1        IIC_Wait_Ack();                   //  
+  23   1        IIC_Stop();                       //IIC停止
+  24   1      }
+  25          
+  26          /* 函数名：AT24C02_Read_Byte
+  27           *  
+  28           * 函数功能：从Address处读出数据Data
+  29           * 
+  30           * 函数参数：Address：AT24C02中ROM所对应的内存地址
+  31           * 
+  32           * 函数返回值：AT24C02中ROM所对应的内存地址的数值
+  33           *
+  34           * 备注：
+  35           */
+  36          unsigned char AT24C02_Read_Byte(unsigned char Address)
+  37          {
+  38   1        unsigned char Read_Byte = 0X00;
+  39   1        
+  40   1        IIC_Start();                      //IIC开始
+  41   1        IIC_Send_Byte(SLAVE_ADDRESS_W);   //写AT24C02地址 + 写操作（向从机发送数据）
+  42   1        IIC_Wait_Ack();                   //从机应答
+  43   1        IIC_Send_Byte(Address);           //写AT24C02中ROM所对应的内存地址
+  44   1        IIC_Wait_Ack();                   //
+  45   1        
+  46   1        IIC_Start();                      //
+  47   1        IIC_Send_Byte(SLAVE_ADDRESS_R);   //写AT24C02地址 + 读操作（从AT24C02所对应的内存地址读数据）
+  48   1        IIC_Wait_Ack();                   //  
+  49   1        Read_Byte = IIC_Receive_Byte();   //从AT24C02所对应的内存地址读数据
+  50   1        IIC_Ack(1);                       //主机应答，为不再接收从机发送的数据
+  51   1        IIC_Stop();                       //IIC停止
+  52   1        
+  53   1        return Read_Byte;
+  54   1      }
+C51 COMPILER V9.60.0.0   AT24C02                                                           11/19/2023 12:22:08 PAGE 2   
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     85    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

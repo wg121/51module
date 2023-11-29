@@ -1,0 +1,85 @@
+C51 COMPILER V9.60.0.0   UART                                                              11/19/2023 12:05:50 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN .\Objects\uart.obj
+COMPILER INVOKED BY: D:\MDK\C51\BIN\C51.EXE uart.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\uart.lst
+                    -) TABS(2) OBJECT(.\Objects\uart.obj)
+
+line level    source
+
+   1          #include "uart.h"
+   2          
+   3          /* 函数名：uart_init
+   4           * 
+   5           * 功能：串口的初始化函数
+   6           * 
+   7           * 参数：void
+   8           *
+   9           * 备注：数据位：8位。波特率（波特率在T1定时器里设置）：4800
+  10           */
+  11          void uart_init(){   //4800bps@11.0592MHz
+  12   1        PCON |= 0x80;     //使能波特率倍速位SMOD
+  13   1        SCON = 0x50;      //8位数据,可变波特率
+  14   1        TMOD &= 0x0F;     //清除定时器1模式位
+  15   1        TMOD |= 0x20;     //设定定时器1为8位自动重装方式
+  16   1        TL1 = 0xF4;       //设定定时初值
+  17   1        TH1 = 0xF4;       //设定定时器重装值
+  18   1        ET1 = 0;          //禁止定时器1中断
+  19   1        TR1 = 1;          //启动定时器1
+  20   1      
+  21   1        ES = 1;   //开始中断
+  22   1        EA = 1;   //开始总中断
+  23   1        PS = 1;   //设置优先级为高优先级
+  24   1      }
+  25          
+  26          /* 函数名：uart_send_byte
+  27           * 
+  28           * 功能：通过51的串口向其他机子发送数据
+  29           * 
+  30           * 参数：byte:发送的字节
+  31           *
+  32           * 备注：
+  33           */
+  34          void uart_send_byte(unsigned char byte){
+  35   1        SBUF = byte;
+  36   1        while(0 == T1);
+  37   1        T1 = 0;
+  38   1      }
+  39          
+  40          //#if 0
+  41          
+  42          ///* 函数名：void uart_rounter(void) interrupt 4
+  43          // * 
+  44          //* 功能：串口的接收中断服务函数
+  45          // * 
+  46          //* 参数：
+  47          // *
+  48          // * 备注：
+  49          // */
+  50          //void uart_rounter(void) interrupt 4
+  51          //{
+  52          //  if(1 == RI){                        //接收中断 -- 接收到数据
+  53          //    uart_recv_data = SBUF;
+  54          //    uart_send_byte(uart_recv_data++); //将接收到的数据，发送给上位机
+C51 COMPILER V9.60.0.0   UART                                                              11/19/2023 12:05:50 PAGE 2   
+
+  55          //    P2 = ~uart_recv_data;             //设置P2的LED灯，位发送的数据的样子
+  56          //    RI = 0;                           //接收中断，软件复位
+  57          //  }
+  58          //}
+  59          //#endif
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     37    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

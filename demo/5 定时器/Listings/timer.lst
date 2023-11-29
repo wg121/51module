@@ -1,0 +1,70 @@
+C51 COMPILER V9.60.0.0   TIMER                                                             11/19/2023 11:42:15 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE TIMER
+OBJECT MODULE PLACED IN .\Objects\timer.obj
+COMPILER INVOKED BY: D:\MDK\C51\BIN\C51.EXE timer.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\timer.l
+                    -st) TABS(2) OBJECT(.\Objects\timer.obj)
+
+line level    source
+
+   1          #include "timer.h"
+   2          
+   3          /* 函数名：timer0_init
+   4           * 
+   5           * 功能：定时器0的初始化：定时1ms，产生一个中断
+   6           * 
+   7           * 参数：void
+   8           *
+   9           * 备注：
+  10           */
+  11          void timer0_init()
+  12          {
+  13   1        TF0 = 0;      //定时器溢出中断标志位
+  14   1        TR0 = 1;      //定时器控制位
+  15   1        TMOD &= 0XF0; //设置定时器0，为16进制计数器
+  16   1        TMOD |= 0X01; //
+  17   1        TL0 = 0X66;   //设置低8位
+  18   1        TH0 = 0XFC;   //设置高8位
+  19   1        
+  20   1        ET0 = 1;      //中断控制位
+  21   1        EA = 1;       //开启总中断
+  22   1        PT0 = 0;      //设置优先级
+  23   1      }
+  24          
+  25          //设置定时器1ms，让LED灯翻转
+  26          /* 函数名：void timer0_rountion(void) interrupt 1
+  27           * 
+  28           * 功能：定时器0的中断服务函数，每1us产生一个中断，当产生1ms的中断时，反转LED灯的状态
+  29           * 
+  30           * 参数：void
+  31           *
+  32           * 备注：
+  33           */
+  34          
+  35          //void timer0_rountion(void) interrupt 1
+  36          //{
+  37          //  TL0 = 0X66;   //设置低8位
+  38          //  TH0 = 0XFC;   //设置高8位
+  39          //  t0_Count++;
+  40          //  if(t0_Count >= 1000){   //定时器定时1ms
+  41          //    t0_Count = 0;
+  42          //    P2_0 = ~P2_0;
+  43          //  }
+  44          //}
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     23    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V9.60.0.0   TIMER                                                             11/19/2023 11:42:15 PAGE 2   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

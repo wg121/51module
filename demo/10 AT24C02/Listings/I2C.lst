@@ -1,0 +1,151 @@
+C51 COMPILER V9.60.0.0   I2C                                                               11/19/2023 12:22:08 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE I2C
+OBJECT MODULE PLACED IN .\Objects\I2C.obj
+COMPILER INVOKED BY: D:\MDK\C51\BIN\C51.EXE I2C.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\I2C.lst) 
+                    -TABS(2) OBJECT(.\Objects\I2C.obj)
+
+line level    source
+
+   1          #include "I2C.h"
+   2          
+   3          /* 函数名：IIC_Start
+   4           *  
+   5           * 函数功能：IIC起始数据位
+   6           * 
+   7           * 函数参数：void
+   8           * 
+   9           * 函数返回值：void
+  10           *
+  11           * 备注：
+  12           */
+  13          void IIC_Start(void)
+  14          {
+  15   1        IIC_SDA = 1;
+  16   1        IIC_SCL = 1;
+  17   1        IIC_SDA = 0;
+  18   1        IIC_SCL = 0;
+  19   1          
+  20   1      }
+  21          
+  22          /* 函数名：IIC_Stop
+  23           *  
+  24           * 函数功能：IIC停止位
+  25           * 
+  26           * 函数参数：void
+  27           * 
+  28           * 函数返回值：void
+  29           *
+  30           * 备注：
+  31           */
+  32          void IIC_Stop(void)
+  33          {
+  34   1        IIC_SDA = 0;
+  35   1        IIC_SCL = 1;
+  36   1        IIC_SDA = 1;
+  37   1      }
+  38          
+  39          /* 函数名：IIC_Send_Byte
+  40           *  
+  41           * 函数功能：IIC发送一个字节
+  42           * 
+  43           * 函数参数：Byte：发送的字节
+  44           * 
+  45           * 函数返回值：void
+  46           *
+  47           * 备注：
+  48           */
+  49          void IIC_Send_Byte(unsigned char Byte)
+  50          {
+  51   1        unsigned char i = 0;
+  52   1        
+  53   1        for(i = 0; i < 8; ++i){
+  54   2          IIC_SDA = Byte&(0X80>>i);
+C51 COMPILER V9.60.0.0   I2C                                                               11/19/2023 12:22:08 PAGE 2   
+
+  55   2          IIC_SCL = 1;
+  56   2          //delay
+  57   2          IIC_SCL = 0;
+  58   2        }
+  59   1      }
+  60          
+  61          /* 函数名：IIC_Receive_Byte
+  62           *  
+  63           * 函数功能：IIC从从机读取数据
+  64           * 
+  65           * 函数参数：void
+  66           * 
+  67           * 函数返回值：从从机读取到的数据
+  68           *
+  69           * 备注：
+  70           */
+  71          unsigned char IIC_Receive_Byte(void)
+  72          {
+  73   1        unsigned char Recv_Byte = 0X00, i = 0;
+  74   1        IIC_SDA = 1;  //释放SDA，使其变为高阻态，让从机为其赋值
+  75   1        
+  76   1        for(i = 0; i < 8; ++i){
+  77   2          IIC_SCL = 1;
+  78   2          if(IIC_SDA) Recv_Byte |= (0X80>>i);
+  79   2          IIC_SCL = 0;
+  80   2        }
+  81   1        
+  82   1        return Recv_Byte;
+  83   1      }
+  84          
+  85          /* 函数名：IIC_Ack
+  86           *  
+  87           * 函数功能：产生应答，即主机接收到从机发送的数据后，给从机的应答
+  88           * 
+  89           * 函数参数：AckBit -- 0：应答（ack）。1：不应答（nack）
+  90           * 
+  91           * 函数返回值：void
+  92           *
+  93           * 备注：
+  94           */
+  95          void IIC_Ack(unsigned char AckBit)
+  96          {
+  97   1        IIC_SDA = AckBit;
+  98   1        IIC_SCL = 1;
+  99   1        IIC_SCL = 0;
+ 100   1        //IIC_SDA = 1;  //应答结束，释放SDA线，让从机继续发送数据
+ 101   1      }
+ 102          
+ 103          /* 函数名：IIC_Wait_Ack
+ 104           *  
+ 105           * 函数功能：等待应答，即主机向从机发送消息，从机的应答
+ 106           * 
+ 107           * 函数参数：void
+ 108           * 
+ 109           * 函数返回值：接收到的应答位，0：应答（ack）。1：不应答（nack）
+ 110           *
+ 111           * 备注：
+ 112           */
+ 113          unsigned char IIC_Wait_Ack(void)
+ 114          {
+ 115   1        unsigned char Recv_Bit = 0X00;
+ 116   1        IIC_SDA = 1;    //释放SDA，使其变为高阻态，让从机为其赋值
+C51 COMPILER V9.60.0.0   I2C                                                               11/19/2023 12:22:08 PAGE 3   
+
+ 117   1        
+ 118   1        IIC_SCL = 1;
+ 119   1        if(IIC_SDA) Recv_Bit = 1; //或者写法是：Recv_Byte = IIC_SDA;
+ 120   1        IIC_SCL = 0;
+ 121   1        
+ 122   1        return Recv_Bit;
+ 123   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    128    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

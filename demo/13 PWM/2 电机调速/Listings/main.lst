@@ -1,0 +1,85 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              11/19/2023 22:35:01 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\MDK\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst
+                    -) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          //电机调速
+   4          
+   5          sbit motor = P1^0;
+   6          sbit LED = P2^0;
+   7          
+   8          //Count：计数的总数。也就是周期
+   9          //Compare：比较的值。就是划分高低电平的值
+  10          unsigned char Count = 0, Compare = 0;
+  11          
+  12          void Timer0_Init(void)    //10微秒@11.0592MHz
+  13          {
+  14   1        TMOD &= 0xF0;   //设置定时器模式
+  15   1        TMOD |= 0x01;   //设置定时器模式
+  16   1        TL0 = 0xF7;   //设置定时初值
+  17   1        TH0 = 0xFF;   //设置定时初值
+  18   1        TF0 = 0;    //清除TF0标志
+  19   1        TR0 = 1;    //定时器0开始计时
+  20   1        
+  21   1        //中断设置
+  22   1        ET0 = 1;
+  23   1        EA = 1;
+  24   1        PT0 = 0;
+  25   1      }
+  26          
+  27          
+  28          void main(){
+  29   1        Timer0_Init();
+  30   1        Compare = 10;
+  31   1        while(1){
+  32   2          if(0 == P3^1) {
+  33   3            Compare = 10;
+  34   3          }else if(0 == P3^0){
+  35   3            Compare = 40;
+  36   3          }else if(0 == P3^2){
+  37   3            Compare = 70;
+  38   3          }else if(0 == P3^3){
+  39   3            Compare = 90;
+  40   3          }
+  41   2        }
+  42   1      }
+  43          
+  44          void Timer0_Motor(void) interrupt 1
+  45          {
+  46   1        //设置定时器为 10us 
+  47   1        TL0 = 0xF7;   //设置定时初值
+  48   1        TH0 = 0xFF;   //设置定时初值
+  49   1        
+  50   1        Count++;
+  51   1        Count %= 100;
+  52   1        if(Count < Compare){
+  53   2          motor = 1;
+  54   2          LED = 0;
+C51 COMPILER V9.60.0.0   MAIN                                                              11/19/2023 22:35:01 PAGE 2   
+
+  55   2        }else {
+  56   2          motor = 0;
+  57   2          LED = 1;
+  58   2        }
+  59   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    148    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

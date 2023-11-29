@@ -1,0 +1,143 @@
+C51 COMPILER V9.60.0.0   ONEWIRE                                                           11/20/2023 14:20:43 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE ONEWIRE
+OBJECT MODULE PLACED IN .\Objects\OneWire.obj
+COMPILER INVOKED BY: D:\MDK\C51\BIN\C51.EXE OneWire.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\OneWi
+                    -re.lst) TABS(2) OBJECT(.\Objects\OneWire.obj)
+
+line level    source
+
+   1          #include "OneWire.h"
+   2          
+   3          /* 函数名称：OneWire_Init
+   4           *
+   5           * 函数功能：单总线协议的初始化（主机拉低电平，释放总线，看从机是否拉低总线）
+   6           * 
+   7           * 函数参数：void
+   8           * 
+   9           * 函数返回值：从机是否存在（是否产生应答）。0：从机已响应，1：从机未响应
+  10           *
+  11           * 备注： 
+  12           */
+  13          unsigned char OneWire_Init(void)
+  14          {
+  15   1        unsigned char AckBit = 1;
+  16   1        unsigned char i;
+  17   1        
+  18   1        OneWire_DQ = 1;
+  19   1        OneWire_DQ = 0;
+  20   1        i = 230; while (--i);   //主机拉低电平 500us
+  21   1        OneWire_DQ = 1;         //主机释放总线，让从机拉低主线
+  22   1        i = 32; while (--i);    //主机拉低电平 70us
+  23   1        AckBit = OneWire_DQ;    //读取从机是否存在（从机存在的话，会拉低电平，也就是输出0）
+  24   1        i = 230; while (--i);   //主机拉低电平 500us
+  25   1        
+  26   1        return AckBit;
+  27   1      }
+  28          
+  29          /* 函数名称：OneWire_Send_Bit
+  30           *
+  31           * 函数功能：单总线协议发送一个字节
+  32           * 
+  33           * 函数参数：Bit：发送的字节，1或0
+  34           * 
+  35           * 函数返回值：void
+  36           *
+  37           * 备注： 
+  38           */
+  39          static void OneWire_Send_Bit(unsigned char Bit)
+  40          {
+  41   1        unsigned char i = 0;
+  42   1        
+  43   1        OneWire_DQ = 0;
+  44   1        i = 4; while (--i);     //主机拉低电平 10us
+  45   1        OneWire_DQ = Bit;       //此时就可以省去判断Bit的值的时间
+  46   1        i = 22; while (--i);    //主机拉低电平 50us
+  47   1        OneWire_DQ = 1;         //释放总线
+  48   1      }
+  49          
+  50          /* 函数名称：
+  51           *
+  52           * 函数功能：单总线协议接收一个字节
+  53           * 
+  54           * 函数参数：void
+C51 COMPILER V9.60.0.0   ONEWIRE                                                           11/20/2023 14:20:43 PAGE 2   
+
+  55           * 
+  56           * 函数返回值：从机发送给主机的电平值
+  57           *
+  58           * 备注： 
+  59           */
+  60          static unsigned char OneWire_Receive_Bit(void)
+  61          {
+  62   1        unsigned char AckBit = 0;
+  63   1        unsigned char i = 0;
+  64   1        
+  65   1        OneWire_DQ = 0;
+  66   1        i = 2;  while (--i);        //延时5us
+  67   1        OneWire_DQ = 1;             //释放总线，然后读取从机发送的字节
+  68   1        i = 2;  while (--i);        //延时5us
+  69   1        AckBit = OneWire_DQ;        //读取从机发送的信号
+  70   1        i = 22; while (--i);        //主机拉低电平 50us
+  71   1        
+  72   1        return AckBit;              //返回从机发送给主机的电平值
+  73   1      }
+  74          
+  75          /* 函数名称：OneWire_Send_Byte
+  76           *
+  77           * 函数功能：单总线协议发送一位数据（8个字节）
+  78           * 
+  79           * 函数参数：Byte：主机发送的字节
+  80           * 
+  81           * 函数返回值：void
+  82           *
+  83           * 备注： 
+  84           */
+  85          void OneWire_Send_Byte(unsigned char Byte)
+  86          {
+  87   1        unsigned char i = 0;
+  88   1        
+  89   1        for(i = 0; i < 8; ++i){
+  90   2          OneWire_Send_Bit(Byte&(0x01 << i));
+  91   2        }
+  92   1      }
+  93          
+  94          /* 函数名称：OneWire_Receive_Byte
+  95           *
+  96           * 函数功能：单总线协议接收一位（8个字节）
+  97           * 
+  98           * 函数参数：void
+  99           * 
+ 100           * 函数返回值：从机发送给主机的字节
+ 101           *
+ 102           * 备注： 
+ 103           */
+ 104          unsigned char OneWire_Receive_Byte(void)
+ 105          {
+ 106   1        unsigned char AckByte = 0x00;
+ 107   1        unsigned char i = 0;
+ 108   1        
+ 109   1        for(i = 0; i < 8; ++i){
+ 110   2          if(OneWire_Receive_Bit())
+ 111   2              AckByte |= (0X01 << i);
+ 112   2        }
+ 113   1        
+ 114   1        return AckByte;
+ 115   1      }
+
+C51 COMPILER V9.60.0.0   ONEWIRE                                                           11/20/2023 14:20:43 PAGE 3   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    141    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
